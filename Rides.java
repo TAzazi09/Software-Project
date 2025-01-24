@@ -1,48 +1,50 @@
-public class Rides
-{
-    //For each ride
-    int rowOfStartInt;
-    int colOfStartInt;
-    int rowOfFinishInt;
-    int colOfFinishInt;
-    int earliestStart;
-    int latestFinish;
-    public Rides(int rowOfStartInt, int colOfStartInt, int rowOfFinishInt, int colOfFinishInt, int earliestStart, int latestFinish)
-    {
-        this.rowOfStartInt = rowOfStartInt;
-        this.colOfStartInt = colOfStartInt;
-        this.rowOfFinishInt = rowOfFinishInt;
-        this.colOfFinishInt = colOfFinishInt;
-        this.earliestStart = earliestStart;
-        this.latestFinish = latestFinish;
+import java.util.Comparator;
+import java.util.ArrayList;
+
+public  class Rides {
+    // variables of the ride
+    private int rideID;
+    private int rowOfStartInt;
+    private int colOfStartInt;
+    private int rowOfFinishInt;
+    private int colOfFinishInt;
+    private int earliestStart;
+    private int latestFinish;
+
+    // Constructor
+    public Rides(String[] currentLineSplit, int lineIndex) {
+        rideID = lineIndex;
+
+        rowOfStartInt = Integer.parseInt(currentLineSplit[0]);
+        colOfStartInt = Integer.parseInt(currentLineSplit[1]);
+        rowOfFinishInt = Integer.parseInt(currentLineSplit[2]);
+        colOfFinishInt = Integer.parseInt(currentLineSplit[3]);
+        earliestStart = Integer.parseInt(currentLineSplit[4]);
+        latestFinish = Integer.parseInt(currentLineSplit[5]);
     }
 
-    public int getRowOfStartInt() {
+    // Getters
+    public int getRideID() {
+        return rideID;
+    }
+
+    public int getRowOfstartInt() {
         return rowOfStartInt;
     }
-    
+
     public int getColOfStartInt() {
         return colOfStartInt;
     }
-    
+
     public int getRowOfFinishInt() {
         return rowOfFinishInt;
     }
-    
-    public int getColOfFinishInt() {
-        return colOfFinishInt;
-    }
-    
+
     public int getEarliestStart() {
         return earliestStart;
     }
-    
+
     public int getLatestFinish() {
         return latestFinish;
-    }
-    
-    @Override
-    public String toString() {
-        return(rowOfStartInt + " " + colOfStartInt + " " + rowOfFinishInt + " " + colOfFinishInt + " " + earliestStart + " " + latestFinish);
     }
 }
