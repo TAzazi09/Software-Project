@@ -7,67 +7,99 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.FileNotFoundException;
 import java.util.List;
-public class Allocation
+import java.util.Collections;
+import java.util.Scanner;
 
-    //TODO decide a proper data-structure to store the allocation
+public class Allocation {
 
-{
-    ArrayList<Cars> cars;
-    ArrayList<Integer> carID;
-    //For each Car
-    public Allocation(String allocationFileName, WorldAndRides worldAndRides) throws FileFormatException {
-        //TODO read an allocation from allocationFileName and stores the content in
-        //an appropriate datastructure inside this class
-        cars = new ArrayList<Cars>();
-        BufferedReader reader = null;
+    private ArrayList<Cars> carsList;
+
+    //Constructor
+    public Allocation(String worldAndRidesFileName) {
+        //List of rides and cars
+        carsList = new ArrayList<>();
+        ArrayList<Rides> ridesList = new ArrayList<>();
+        int numOfCars=0;
+
+        //More variables needed
+        
+
+        //Read the file and allocate rides
         try {
-            reader = new BufferedReader(new FileReader(allocationFileName));
-            String line;
-            List<String> ls = new ArrayList<String>();
-            int numOfRides = 0;
-            while((line=reader.readLine())!=null){
-                ls.add(line);
-            }
-            for(String word : ls) {
-                //for each car
-                ArrayList<Integer> car = new ArrayList<Integer>();
-                String[] strArray = word.split(" ");
-                int[] intArray = new int[strArray.length];
-                for(int i = 0; i < strArray.length; i++){
-                    intArray[i] = Integer.parseInt(strArray[i]);
-                    car.add(intArray[i]);
+            //Make file
+            File worldAndRides = new File(worldAndRidesFileName);
+            Scanner scan = new Scanner(worldAndRides);
+
+
+            //Variables to read file
+            String currentLine;
+            String[] currentLineSplit;
+            int lineIndex = 0;
+
+            //Loop through the file
+            while(scan.hasNextLine()){
+                currentLine = scan.nextLine();
+                currentLineSplit = currentLine.split(" ");
+
+                if(lineIndex != 0){
+                    Rides ride = new Rides(currentLineSplit, lineIndex);
+                    ridesList.add(ride);
+                    lineIndex++;
                 }
-                //System.out.println(car);
-                carID = new ArrayList<Integer>();
-                for(int j = 0; j < car.size(); j++) {
-                    if(j==0){
-                        numOfRides = car.get(0);
-                    } else {
-                        carID.add(car.get(j));
-                    }
+                else if(lineIndex == 0) {
+                    numOfCars = Integer.parseInt (currentLineSplit[2]);
+                    lineIndex++;
                 }
-                //System.out.println(numOfRides);
-                //System.out.println(carID);
-                cars.add(new Cars(numOfRides, carID)); 
+                else {
+                    lineIndex++;
+                }
+                
             }
-            
-            //System.out.println(car);
-            //System.out.println(cars.toString());
-            reader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("ERROR: File not found");
-        } catch(IOException e) {
-            
+            //Close the file
+            scan.close();
+
         } 
-    }
-    //TODO define appropriate methods for this class (e.g. accessor methods)
-    public int getCarRides(){
-        int carRides = 0;
-        for(Cars car : cars) {
-            carRides = car.getNumOfRides();
+        catch (FileNotFoundException e) {
+            System.err.println("Error: File not found: " + worldAndRidesFileName);
         }
-        return carRides;
+
+        //Creating cars
+        for(int i = 0; i < numOfCars; i++) {
+            Cars car = new Cars(i);
+            carsList.add(car);
+        }
+
+        //First allocate the rides to the car
+        allocate(carsList, ridesList);
     }
-    
-}
-    
+
+    public void allocate(ArrayList<Cars> carsList, ArrayList<Rides> ridesList) {
+        int count = 0;
+        while (count < ridesList.size()) {
+            for (Cars car : carsList) {
+                if (count < ridesList.size()) {
+                    int rideID = ridesList.get(count).getRideID(); 
+                    car.giveRideToCar(rideID); 
+                    count++;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    //Method that prints result
+    public void printAllocation() {
+        for (Cars car : carsList) {
+            int totalRides = car.getRideIDsforCar().size();  // Store count in an int
+            String rideIDsAsString = "";  // Initialize empty string for ride IDs
+
+            for (int id : car.getRideIDsforCar()) {
+                rideIDsAsString += id + " ";  // Append ride ID with a space
+            }
+
+            System.out.println(totalRides + " " + rideIDsAsString);  // Print count and list
+        }
+    }
+ }
+
