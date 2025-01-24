@@ -1,9 +1,9 @@
 public class Main {
   public static void main(String[] args) {
     String worldAndRidesFileName = args[0];
-    String allocationFileName = args[1];
-    
-    Simulation s = new Simulation(worldAndRidesFileName, allocationFileName);
-    s.run();
+    //modify the following to launch the allocation which would read the rides file and print 
+    //the allocation to the standard output, e.g.
+    Allocation allocation = new Allocation(worldAndRidesFileName);
+    allocation.printAllocation();
   }
 }
