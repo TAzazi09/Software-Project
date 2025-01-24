@@ -1,34 +1,30 @@
 import java.util.List;
 import java.util.ArrayList;
-
 public class Cars
 {
-    //For each car
-    // number of rides done by a specific car
-    int numOfRides;
-    //data structure to store id to specify each ride
-    ArrayList<Integer> id;
-    /**
-     * Constructor for objects of class Cars
-     */
-    public Cars(int numOfRides, ArrayList<Integer> id)
+    //Variables
+    private int carID;
+    private ArrayList<Integer> rideIDsforCar;
+
+    //Constructor
+    public Cars(int carID)
     {
-        this.numOfRides = numOfRides;
-        this.id = id;
+        this.carID = carID;
+        rideIDsforCar = new ArrayList<>();
     }
-    
-    public int getNumOfRides()
-    {
-        return numOfRides;
+   
+   //Getter
+   public ArrayList<Integer> getRideIDsforCar() {
+       return rideIDsforCar;
+   }
+
+
+    public int getSize() {  // Corrected method name
+        return rideIDsforCar.size();
     }
-    
-    public int getId(int index)
-    {
-        return id.get(index);
-    }
-    
-    @Override
-    public String toString() {
-        return(numOfRides + " " + id);
-    }
+
+   //Setter
+   public void giveRideToCar(int rideID) {
+       rideIDsforCar.add(rideID);
+   }
 }
